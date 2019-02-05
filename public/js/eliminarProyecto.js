@@ -14,8 +14,8 @@ $(document).ready(function(){
 			row.fadeOut();
 			$('#proyectos').html(result.total);
 			$('#alert').html(result.mensaje);
-		}).fail(function(){
-			$('#alert').html('Algo salio mal');
+		}).fail(function(error){
+			$('#alert').html('Algo salio mal '+error);
 		});
 	});
 });

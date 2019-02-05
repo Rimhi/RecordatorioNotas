@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+DB::listen(function($query){
+	echo "<pre>{$query->sql}</pre>";
+});
 
 Route::get('/', function () {
     return view('welcome');

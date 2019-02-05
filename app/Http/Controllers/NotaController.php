@@ -7,6 +7,8 @@ use App\nota;
 use App\Categoria;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Mail;
+use App\Http\Controllers\Auth;
 use App\User;
 
 class NotaController extends Controller
@@ -27,7 +29,7 @@ class NotaController extends Controller
     public function index()
     {
         $id = auth()->user()->id;
-        $notas = nota::paginate();
+        $notas = nota::with(['user'])->get();
         return view('notas/index')->with(compact(['notas','id']));
     }
 
@@ -52,7 +54,7 @@ class NotaController extends Controller
     public function store(Request $request)
     {
         //dd($request);
-        DB::table('notas')->insert([
+        $nota = DB::table('notas')->insert([
         "user_id"=>auth()->user()->id,
         "colaborador"=>$request->input('colaborador'),
         "name" => $request->input('name'),
@@ -63,6 +65,9 @@ class NotaController extends Controller
         "created_at" => Carbon::now(),
         "updated_at" => Carbon::now(), 
         ]);
+        Mail::send('emails.addNota',['nota'=>$nota],function($mensaje) use ($nota){
+                  $mensaje->to(auth()->user()->email, auth()->user()->name)->subject('haz creado una nota!'); 
+        });
         /*
         $nota = nota::create($request->all());
          if (auth()->check()) {
@@ -78,9 +83,9 @@ class NotaController extends Controller
      * @param  \App\nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function show(nota $nota)
+    public function show( $id)
     {
-        //
+        
     }
 
     /**
@@ -89,9 +94,12 @@ class NotaController extends Controller
      * @param  \App\nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function edit(nota $nota)
+    public function edit($id)
     {
-        //
+        $nota = nota::findorFail($id);
+        $categorias = Categoria::all();
+        $usuarios = User::all();
+        return view('notas.show')->with(compact('nota','usuarios','categorias'));
     }
 
     /**
@@ -101,9 +109,14 @@ class NotaController extends Controller
      * @param  \App\nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, nota $nota)
+    public function update(Request $request, $id)
     {
-        //
+       
+            $nota = nota::findorFail($id);
+            $nota->update($request->all());
+            $notaTotal = nota::all()->count();
+
+            return redirect()->route('nota.index');
     }
 
     /**
@@ -112,8 +125,12 @@ class NotaController extends Controller
      * @param  \App\nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function destroy(nota $nota)
+    public function destroy($id)
     {
-        //
+
+        
+        DB::table('notas')->where('id',$id)->delete();
+        return  redirect()->route('nota.index');
+        
     }
 }

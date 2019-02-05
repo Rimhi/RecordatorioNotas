@@ -5,7 +5,8 @@
 		@if(session()->has('info'))
 		<h3>{{session('info')}}</h3>
 		@else
-			<table class="table">
+<table class="table">
+  <div id="alert" class="alert alert-info">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
@@ -14,6 +15,7 @@
       <th scope="col">Responsable</th>
       <th scope="col">Fecha de Inicio</th>
       <th scope="col">Fecha de Fin</th>
+      <th scope="col">Opciones</th>
     </tr>
   </thead>
   <tbody>
@@ -25,9 +27,18 @@
       <td>{{$nota->user->name}}</td>
       <td>{{$nota->created_at}}</td>
       <td>{{$nota->fecha_final}}</td>
+      <td>
+        <a href="{{route('nota.edit',$nota->id)}}">Editar</a>
+        <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
+          @csrf
+          {!!method_field('DELETE')!!}
+          <button class="btn btn-danger">Eliminar</button>
+        </form></td>
+
     </tr>
     @endforeach
   </tbody>
 </table>
 		@endif
+   
 @endsection
