@@ -10,14 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+/*
 DB::listen(function($query){
 	echo "<pre>{$query->sql}</pre>";
-});
+});*/
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
 /**Registro**/
 Route::resource('registro','registro');
 /**usuarios**/
@@ -26,6 +26,16 @@ Route::resource('usuario','UserController');
 Route::get('roles',function(){
 	return \App\Role::with('user')->get();
 });
+
+/**Estados**/
+Route::resource('estado','EstadoController');
+
+/**Grupos**/
+
+Route::resource('grupo','GrupoController');
+
+/**Categorias**/
+Route::resource('categoria','CategoriaController');
 
 /**Notas**/
 Route::resource('nota','NotaController');

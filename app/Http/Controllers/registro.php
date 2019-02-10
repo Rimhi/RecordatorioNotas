@@ -23,7 +23,10 @@ class registro extends Controller
     {
        // hay dos formas de hacerlo, la comentada es por sentiencias de consultas y la no comentada es por eloquent
         //$proyecto = DB::table('proyeto')->get();
-        $id = auth()->user()->id;
+        if (auth()->user()!=null) {
+            $id = auth()->user()->id;
+        }
+       
         $proyecto = Proyecto::paginate();
         return view('registrar/index')->with(compact(['proyecto','id']));
         

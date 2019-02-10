@@ -1,4 +1,3 @@
-	alert('hola');
 $(document).ready(function(){
 	$('#alert').hide();
 	$('#btn-edit').click(function(e){

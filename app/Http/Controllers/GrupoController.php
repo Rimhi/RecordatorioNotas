@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Estado;
+use App\Grupo;
+use App\User;
+use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
-class EstadoController extends Controller
+class GrupoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +17,10 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        $estados = Estado::all();
-        return view('estados.index')->with(compact(['estados']));;
+
+        $usuarios = User::pluck('name','id');
+        $grupos = Grupo::all();
+        return view('grupos.index')->with(compact(['grupos','usuarios']));
     }
 
     /**
@@ -27,7 +30,7 @@ class EstadoController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -38,22 +41,23 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $estado = DB::table('estados')->insert([
-        "estado" => $request->input('name'), 
-        "created_at" => Carbon::now(),
-        "updated_at" => Carbon::now(), 
-        ]);
-        return  redirect()->route('nota.create');
+        //dd($request->all());
+
+        $grupo = Grupo::create($request->all());
+        $grupo->users()->attach($request->user_id);
+         if (auth()->check()) {
+             auth()->user()->grupos()->save($grupo);
+         }
+          return  redirect()->route('nota.create');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Estado  $estado
+     * @param  \App\Grupo  $grupo
      * @return \Illuminate\Http\Response
      */
-    public function show(Estado $estado)
+    public function show(Grupo $grupo)
     {
         //
     }
@@ -61,10 +65,10 @@ class EstadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Estado  $estado
+     * @param  \App\Grupo  $grupo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Estado $estado)
+    public function edit(Grupo $grupo)
     {
         //
     }
@@ -73,10 +77,10 @@ class EstadoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Estado  $estado
+     * @param  \App\Grupo  $grupo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Estado $estado)
+    public function update(Request $request, Grupo $grupo)
     {
         //
     }
@@ -84,10 +88,10 @@ class EstadoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Estado  $estado
+     * @param  \App\Grupo  $grupo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Estado $estado)
+    public function destroy(Grupo $grupo)
     {
         //
     }

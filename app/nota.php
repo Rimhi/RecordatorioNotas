@@ -14,5 +14,14 @@ class nota extends Model
     public function categoria(){
     	return $this->belongsTo(Categoria::class);
     }
+
+
+    //scope
+    public function scopeName($query, $name)
+    {
+    	if ($name) {
+    		return $query->where('name','LIKE',"%$name%");
+    	}
+    }
 }
 

@@ -14,10 +14,11 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/eliminarProyecto.js') }}" defer></script>
-    <script src="{{ asset('js/editarProyecto.js') }}" defer></script>
+    <script src="{{ asset('js/editarProyecto.js') }}" ></script>
     <script src="{{ asset('js/jquery.min.js')}}"></script>
     <script src="{{ asset('js/TweenMax.min.js')}}"></script>
     <script src="{{ asset('js/send.js')}}"></script>
+  
     
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -79,6 +80,9 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
                                     <a class="dropdown-item" href="{{route('usuario.edit',auth()->user()->id)}}">Mi cuenta</a>
+                                    <a class="dropdown-item" href="{{route('estado.index')}}">Estados</a>
+                                    <a class="dropdown-item" href="{{route('categoria.index')}}">Categorias</a>
+                                    <a class="dropdown-item" href="{{route('grupo.index')}}">Grupos</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

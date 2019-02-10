@@ -50,4 +50,7 @@ class User extends Authenticatable
      public function notas(){
         return $this->hasMany(nota::class);
     }
+    public function grupos(){
+        return $this->belongsToMany(Grupo::class,'assigned_grupos');
+    }
 }

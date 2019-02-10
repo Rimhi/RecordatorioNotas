@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Categoria;
 use Illuminate\Http\Request;
+use DB;
+use Carbon\Carbon;
 
 class CategoriaController extends Controller
 {
@@ -14,7 +16,8 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        //
+        $categorias = Categoria::all();
+        return view('categorias.index')->with(compact(['categorias']));
     }
 
     /**
@@ -35,7 +38,13 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $categoria = DB::table('categorias')->insert([
+        "categoria"=>$request->input('name'),
+        "descripcion" => $request->input('descripcion'),
+        "created_at" => Carbon::now(),
+        "updated_at" => Carbon::now(), 
+        ]);
+        return  redirect()->route('nota.create');
     }
 
     /**
