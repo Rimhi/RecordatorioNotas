@@ -9,9 +9,9 @@ use App\Estado;
 use App\Grupo;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Mail;
 use App\Http\Controllers\Auth;
 use App\User;
+use App\Events\NotaCreada;
 
 class NotaController extends Controller
 {
@@ -30,24 +30,24 @@ class NotaController extends Controller
      */
     public function index(Request $request)
     {
-     
+    // dd(Carbon::now()->format('d-m-y'));
            
         $name = $request->get('name');
          if (auth()->user()!=null) {
             $id = auth()->user()->id;
         }   
-
-            
+        $date = Carbon::now()->format('Y-m-d');
+        $now = Carbon::parse($date);
             $notas = nota::orderBy('id')
             ->name($name)
             ->with(['user'])
             ->get();
-        return view('notas/index')->with(compact(['notas','id']));
+        return view('notas/index')->with(compact(['notas','id','now']));
     }
     /**
     Estados: Pendiente,Terminado,advertencia,urgente <---realizado el agregar estados
 
-    Crear grupos
+    Crear grupos <----finalizado
 
     dashboard
 
@@ -71,7 +71,7 @@ class NotaController extends Controller
         $categorias = Categoria::all();
         $estados = Estado::all();
         $user = auth()->user();
-        return view('notas.add',compact('estados','nota','user','categorias','grupos'));
+        return view('notas.add',compact('estados','user','categorias','grupos'));
     }
 
     /**
@@ -85,7 +85,7 @@ class NotaController extends Controller
         
         $nota = DB::table('notas')->insert([
         "user_id"=>auth()->user()->id,
-        "colaborador"=>$request->input('colaborador'),
+        "grupo_id"=>$request->input('colaborador'),
         "name" => $request->input('name'),
         "descripcion" => $request->input('descripcion'),
         "fecha_final" => $request->input('fecha_final'),
@@ -94,16 +94,15 @@ class NotaController extends Controller
         "created_at" => $request->input('fecha_inicio'),
         "updated_at" => Carbon::now(), 
         ]);
-        Mail::send('emails.addNota',['nota'=>$nota],function($mensaje) use ($nota){
-                  $mensaje->to(auth()->user()->email, auth()->user()->name)->subject('haz creado una nota!'); 
-        });
+        event(new NotaCreada($request));
+       
         /*
         $nota = nota::create($request->all());
          if (auth()->check()) {
              auth()->user()->notas()->save($nota);
          }*/
          
-       // return  redirect()->route('nota.index');
+        return  redirect()->route('nota.index');
     }
 
     /**
@@ -116,6 +115,9 @@ class NotaController extends Controller
     {
         $nota = nota::findorFail($id);
         $grupo = Grupo::findorFail($nota->colaborador);
+        /**
+        Mejorar con los grupos ojo cambio de colaborador a grupo_id en la tabla de la base de datos por posible error
+        **/
         return view('notas.show')->with(compact(['nota','grupo']));
     }
 
@@ -144,7 +146,7 @@ class NotaController extends Controller
     {
          
         DB::table('notas')->where('id',$id)->update([
-        "colaborador"=>$request->input('colaborador'),
+        "grupo_id"=>$request->input('colaborador'),
                 "name" => $request->input('name'),
                 "descripcion" => $request->input('descripcion'),
                 "fecha_final" => $request->input('fecha_final'),

@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class EstadoController extends Controller
 {
+
+      public function __construc(){
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+    }
     /**
      * Display a listing of the resource.
      *

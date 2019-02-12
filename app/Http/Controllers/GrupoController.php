@@ -10,6 +10,13 @@ use Carbon\Carbon;
 
 class GrupoController extends Controller
 {
+   
+
+
+    public function __construc(){
+        $this->middleware('auth');
+        $this->middleware('role:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -44,10 +51,11 @@ class GrupoController extends Controller
         //dd($request->all());
 
         $grupo = Grupo::create($request->all());
-        $grupo->users()->attach($request->user_id);
+        $grupo->users()->sync($request->user_id);
+         /*
          if (auth()->check()) {
              auth()->user()->grupos()->save($grupo);
-         }
+         }*/
           return  redirect()->route('nota.create');
     }
 
