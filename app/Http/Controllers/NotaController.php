@@ -58,6 +58,13 @@ class NotaController extends Controller
 
 
     sistema de alertas por dias -3, -5 y -7 dias de 3 hacia abajo todos los dias un correo
+
+
+
+
+
+    correciones: Responsable -> en el responsable yo lo pedo elegir de los integrantes del grupo
+    antes mostrar el grupo al que se le va asignar la nota y de ahi aparecera la lista de integrantes para poseteriormente elegir los colaboradores
     **/
 
     /**
@@ -94,7 +101,7 @@ class NotaController extends Controller
         "created_at" => $request->input('fecha_inicio'),
         "updated_at" => Carbon::now(), 
         ]);
-        event(new NotaCreada($request));
+        //event(new NotaCreada($request));
        
         /*
         $nota = nota::create($request->all());

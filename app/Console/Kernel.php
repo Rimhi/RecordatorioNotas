@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('enviaremail:notas')->everyMinute();
+        $schedule->command('enviaremail:notas')->dailyAt('00:23');
 
     }
 

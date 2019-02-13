@@ -6,7 +6,7 @@ use App\Events\NotaCreada;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Mail;
-
+use SuperClosure\Serializer;
 class EnviarEmail
 {
     /**
@@ -27,11 +27,12 @@ class EnviarEmail
      */
     public function handle(NotaCreada $event)
     {
+        
         $nota = $event->nota;
-        dd($event->nota);
-        $enviarmensaje = Mail::send('emails.addNota',['nota'=>$nota],function($mensaje) use ($nota){
+        //dd($event->nota);
+        Mail::send('emails.addNota',['nota'=>$nota],function($mensaje) use ($nota){
                   $mensaje->to(auth()->user()->email, auth()->user()->name)->subject('haz creado una nota!'); 
         });
-        $serialized = serialize($enviarmensaje);
+        
     }
 }
