@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class nota extends Model
 {
-       protected $fillable = ['nombre','descripcion'];
+       protected $fillable = ['name','descripcion','user_id','fecha_final','estado_id','categoria_id','grupo_id'];
        protected $dates = ['fecha_final'];
 
     public function user(){
@@ -18,6 +18,12 @@ class nota extends Model
     public function comentarios(){
         return $this->hasOne(Comenterio::class);
     }
+    public function estado(){
+        return $this->belongsTo(Estado::class);
+    }
+    public function grupo(){
+        return $this->belongsTo(Grupo::class);
+    }
 
 
     //scope
@@ -26,6 +32,9 @@ class nota extends Model
     	if ($name) {
     		return $query->where('name','LIKE',"%$name%");
     	}
+    }
+     public function users(){
+        return $this->belongsToMany(User::class,'assigned_notas');
     }
 }
 

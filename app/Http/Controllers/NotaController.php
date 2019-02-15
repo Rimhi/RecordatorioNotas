@@ -64,7 +64,7 @@ class NotaController extends Controller
 
 
     correciones: Responsable -> en el responsable yo lo pedo elegir de los integrantes del grupo
-    antes mostrar el grupo al que se le va asignar la nota y de ahi aparecera la lista de integrantes para poseteriormente elegir los colaboradores
+    antes mostrar el grupo al que se le va asignar la nota y de ahi aparecera la lista de integrantes para poseteriormente elegir los colaboradores, responsive, mejorar diseño
     **/
 
     /**
@@ -72,13 +72,15 @@ class NotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $grupos = Grupo::pluck('nombre','id');
-        $categorias = Categoria::all();
-        $estados = Estado::all();
-        $user = auth()->user();
-        return view('notas.add',compact('estados','user','categorias','grupos'));
+       
+            $grupo = Grupo::findorFail($request->id);
+            $id = $request->id;
+            $categorias = Categoria::all();
+            $estados = Estado::all();
+        
+        return view('notas.add',compact('estados','categorias','grupo','id'));
     }
 
     /**
@@ -89,18 +91,21 @@ class NotaController extends Controller
      */
     public function store(Request $request)
     {
-        
+         $nota = nota::create($request->all());
+       /* 
         $nota = DB::table('notas')->insert([
-        "user_id"=>auth()->user()->id,
-        "grupo_id"=>$request->input('colaborador'),
+        "user_id"=>$request->input('user_id'),
+        "grupo_id"=>$request->input('grupo_id'),
         "name" => $request->input('name'),
         "descripcion" => $request->input('descripcion'),
         "fecha_final" => $request->input('fecha_final'),
-        "estado_id" =>$request->input('estado'),
-        'categoria_id'=>$request->input('categoria'),
-        "created_at" => $request->input('fecha_inicio'),
+        "estado_id" =>$request->input('estado_id'),
+        'categoria_id'=>$request->input('categoria_id'),
+        "created_at" => $request->input('created_at'),
         "updated_at" => Carbon::now(), 
-        ]);
+        ]);*/
+        $nota->users()->sync($request->colaborador);
+
         //event(new NotaCreada($request));
        
         /*
@@ -118,14 +123,10 @@ class NotaController extends Controller
      * @param  \App\nota  $nota
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show($id)
     {
         $nota = nota::findorFail($id);
-        $grupo = Grupo::findorFail($nota->colaborador);
-        /**
-        Mejorar con los grupos ojo cambio de colaborador a grupo_id en la tabla de la base de datos por posible error
-        **/
-        return view('notas.show')->with(compact(['nota','grupo']));
+        return view('notas.show')->with(compact(['nota']));
     }
 
     /**
@@ -139,7 +140,8 @@ class NotaController extends Controller
         $nota = nota::findorFail($id);
         $categorias = Categoria::all();
         $usuarios = User::all();
-        return view('notas.edit')->with(compact('nota','usuarios','categorias'));
+        $estados = Estado::all();
+        return view('notas.edit')->with(compact('nota','usuarios','categorias','estados'));
     }
 
     /**
@@ -151,7 +153,7 @@ class NotaController extends Controller
      */
     public function update(Request $request, $id)
     {
-         
+        /* 
         DB::table('notas')->where('id',$id)->update([
         "grupo_id"=>$request->input('colaborador'),
                 "name" => $request->input('name'),
@@ -160,7 +162,10 @@ class NotaController extends Controller
                 "estado_id" =>$request->input('estado'),
                 "categoria_id"=>$request->input('categoria'),
                 "updated_at" => Carbon::now(), ]);
+                */
          $nota = nota::findorFail($id);
+         $nota->update($request->all());
+         $nota->users()->sync($request->colaborador);
          return  redirect()->route('nota.index');
             /**
             dd($request->fecha_final);
@@ -188,8 +193,9 @@ class NotaController extends Controller
      */
     public function destroy($id)
     {
-
-        
+        $nota = nota::findorFail($id);
+        //$nota = nota::where('id','=',$id);
+        $nota->users()->detach();
         DB::table('notas')->where('id',$id)->delete();
         return  redirect()->route('nota.index');
         

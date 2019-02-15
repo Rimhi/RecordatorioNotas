@@ -37,8 +37,15 @@ Route::resource('grupo','GrupoController');
 /**Categorias**/
 Route::resource('categoria','CategoriaController');
 
+/**Pre Create Notas **/
+Route::get('precreate','PreCreateNota@index')->name('precreatenota.index');
+Route::post('precreate','PreCreateNota@enviar')->name('precreatenota.enviar');
+
 /**Notas**/
 Route::resource('nota','NotaController');
+Route::get('nota/crear/{id}','NotaController@create')->name('nota.create');
+
+
 
 /*login*/
 Route::get('login','Auth\LoginCotroller@showLoginForm')->name('login');

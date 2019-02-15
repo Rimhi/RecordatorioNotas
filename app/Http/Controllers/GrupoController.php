@@ -56,7 +56,7 @@ class GrupoController extends Controller
          if (auth()->check()) {
              auth()->user()->grupos()->save($grupo);
          }*/
-          return  redirect()->route('nota.create');
+          return  redirect()->route('precreatenota.enviar');
     }
 
     /**

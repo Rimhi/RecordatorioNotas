@@ -17,97 +17,83 @@
     </div>
     {{ Form::close() }}
     <div class="container">
-      <div class="row">
-<table class="table">
-  <div id="alert" class="alert alert-info">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Descripcion</th>
-      <th scope="col">Responsable</th>
-      <th scope="col">Fecha de Inicio</th>
-      <th scope="col">Fecha de Fin</th>
-      <th scope="col">Opciones</th>
-    </tr>
-  </thead>
-  <tbody>
-  	@foreach($notas as $nota)
-    @if($now->diffInDays($nota->fecha_final,false)<=3)
-       <tr style="background-color: red">
-      <th scope="row">{{$nota->id}}</th>
-      <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
-      <td>{{$nota->descripcion}}</td>
-      <td>{{$nota->user->name}}</td>
-      <td>{{$nota->created_at->format('Y-m-d')}}</td>
-      <td>{{$nota->fecha_final->format('Y-m-d')}}  |  faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
-      <td>
-        <a class="btn btn-success" href="{{route('nota.edit',$nota->id)}}">Editar</a>
-        <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
-          @csrf
-          {!!method_field('DELETE')!!}
-          <button class="btn btn-danger">Eliminar</button>
-        </form></td>
+        <table class="table table-hover">
+          <div id="alert" class="alert alert-info">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Responsable</th>
+              <th scope="col">Final</th>
+              <th scope="col">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+          	@foreach($notas as $nota)
+            @if($now->diffInDays($nota->fecha_final,false)<=3)
+               <tr style="background-color: red">
+              <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
+              <td>{{$nota->descripcion}}</td>
+              <td>{{$nota->user->name}}</td>
+              <td>{{$nota->created_at->format('Y-m-d')}}</td>
+              <td>faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
+              <td>
+                <a class="btn btn-success" href="{{route('nota.edit',$nota->id)}}">Editar</a>
+                <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
+                  @csrf
+                  {!!method_field('DELETE')!!}
+                  <button class="btn btn-danger">Eliminar</button>
+                </form></td>
 
-    </tr>
+            </tr>
 
 
-    @elseif(($now->diffInDays($nota->fecha_final,false)>=4) && ($now->diffInDays($nota->fecha_final,false)<=5))
-    <tr style="background-color: orange">
-      <th scope="row">{{$nota->id}}</th>
-      <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
-      <td>{{$nota->descripcion}}</td>
-      <td>{{$nota->user->name}}</td>
-      <td>{{$nota->created_at->format('Y-m-d')}}</td>
-      <td>{{$nota->fecha_final->format('Y-m-d')}}  |  faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
-      <td>
-        <a class="btn btn-success" href="{{route('nota.edit',$nota->id)}}">Editar</a>
-        <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
-          @csrf
-          {!!method_field('DELETE')!!}
-          <button class="btn btn-danger">Eliminar</button>
-        </form></td>
+            @elseif(($now->diffInDays($nota->fecha_final,false)>=4) && ($now->diffInDays($nota->fecha_final,false)<=5))
+            <tr style="background-color: orange">
+              <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
+              <td>{{$nota->user->name}}</td>
+              <td>faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
+              <td>
+                <a class="btn btn-success btn-sm" href="{{route('nota.edit',$nota->id)}}">Editar</a>
+                <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
+                  @csrf
+                  {!!method_field('DELETE')!!}
+                  <button class="btn btn-danger btn-sm">Eliminar</button>
+                </form></td>
 
-    </tr>
-    @elseif(($now->diffInDays($nota->fecha_final,false)>=6) && ($now->diffInDays($nota->fecha_final,false)<=7))
-       <tr style="background-color: yellow">
-      <th scope="row">{{$nota->id}}</th>
-      <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
-      <td>{{$nota->descripcion}}</td>
-      <td>{{$nota->user->name}}</td>
-      <td>{{$nota->created_at->format('Y-m-d')}}</td>
-      <td>{{$nota->fecha_final->format('Y-m-d')}}  |  faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
-      <td>
-        <a class="btn btn-success" href="{{route('nota.edit',$nota->id)}}">Editar</a>
-        <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
-          @csrf
-          {!!method_field('DELETE')!!}
-          <button class="btn btn-danger">Eliminar</button>
-        </form></td>
+            </tr>
+            @elseif(($now->diffInDays($nota->fecha_final,false)>=6) && ($now->diffInDays($nota->fecha_final,false)<=7))
+               <tr style="background-color: yellow">
+              <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
+              <td>{{$nota->descripcion}}</td>
+              <td>{{$nota->user->name}}</td>
+              <td>faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
+              <td>
+                <a class="btn btn-success" href="{{route('nota.edit',$nota->id)}}">Editar</a>
+                <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
+                  @csrf
+                  {!!method_field('DELETE')!!}
+                  <button class="btn btn-danger">Eliminar</button>
+                </form></td>
 
-    </tr>
-    @else
-    <tr style="background-color: green">
-      <th scope="row">{{$nota->id}}</th>
-      <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
-      <td>{{$nota->descripcion}}</td>
-      <td>{{$nota->user->name}}</td>
-      <td>{{$nota->created_at->format('Y-m-d')}}</td>
-      <td>{{$nota->fecha_final->format('Y-m-d')}}  |  faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
-      <td>
-        <a class="btn btn-success" href="{{route('nota.edit',$nota->id)}}">Editar</a>
-        <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
-          @csrf
-          {!!method_field('DELETE')!!}
-          <button class="btn btn-danger">Eliminar</button>
-        </form></td>
+            </tr>
+            @else
+            <tr class="success">
+              <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
+              <td>{{$nota->user->name}}</td>
+              <td>faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
+              <td>
+                <a class="btn btn-success btn-sm" href="{{route('nota.edit',$nota->id)}}">Editar</a>
+                <form style="display: inline-block;" method="POST" action="{{route('nota.destroy',$nota->id)}}">
+                  @csrf
+                  {!!method_field('DELETE')!!}
+                  <button class="btn btn-danger btn-sm ">Eliminar</button>
+                </form></td>
 
-    </tr>
-    @endif
-    @endforeach
-  </tbody>
-</table>
-</div>
+            </tr>
+            @endif
+            @endforeach
+          </tbody>
+        </table>
 </div>
 		@endif
    

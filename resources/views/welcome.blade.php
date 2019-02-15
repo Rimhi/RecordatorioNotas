@@ -2,10 +2,10 @@
 @section('titulo','Inicio')
 @section('content')
 		@if(auth()->check())
-			@if(auth()->user()->rol == 'admin')
+			@if(auth()->user()->hasRole(['admin']))
 				<div><h1>Admin</h1></div>
 			@endif
-			@if(auth()->user()->rol == 'user')
+			@if(auth()->user()->hasRole(['user']))
 				<div><h1>Usuario</h1></div>
 			@endif
 		@endif

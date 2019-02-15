@@ -13,11 +13,12 @@
 						</div>
 						<p>
 							{{$nota->descripcion}}	
+							
 						</p>
 						<p>Responsable: {{$nota->user->name}}</p>
-						<p>Colaborador: {{$grupo->nombre}}</p>
+						<p>Colaborador: {{$nota->grupo->nombre}}</p>
 						<p>Integrantes: 
-						@foreach($grupo->users as $integrante)
+						@foreach($nota->users as $integrante)
 			      		{{$integrante->name}} -
 			      		@endforeach
 						</p>

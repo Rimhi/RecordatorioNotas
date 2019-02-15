@@ -53,4 +53,7 @@ class User extends Authenticatable
     public function grupos(){
         return $this->belongsToMany(Grupo::class,'assigned_grupos');
     }
+    public function misnotas(){
+        return$this->belongsToMany(nota::class,'assigned_notas');
+    }
 }

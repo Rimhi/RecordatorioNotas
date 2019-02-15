@@ -44,7 +44,7 @@ class CategoriaController extends Controller
         "created_at" => Carbon::now(),
         "updated_at" => Carbon::now(), 
         ]);
-        return  redirect()->route('nota.create');
+        return  redirect()->route('precreatenota.enviar');
     }
 
     /**
