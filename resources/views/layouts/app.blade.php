@@ -70,12 +70,10 @@
                                 </li>
                             @endif
                         @else
-                            
 
                             <li class="nav-item"><a class="nav-link" href="{{route('precreatenota.index')}}">Notas</a></li>
 
                             <li class="nav-item"><a class="nav-link" href="{{route('nota.index')}}">Notas list</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{route('registro.index')}}">lista de registros</a></li>
                             @if(auth()->user()->hasRole(['admin']))
                                 <li class="nav-item"><a class="nav-link" href="{{route('usuario.index')}}">Usuarios</a></li>
                             @endif

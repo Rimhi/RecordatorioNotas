@@ -29,6 +29,7 @@
           </thead>
           <tbody>
           	@foreach($notas as $nota)
+            @if($nota->users->id == auth()->user()->id)
             @if($now->diffInDays($nota->fecha_final,false)<=3)
                <tr style="background-color: red">
               <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
@@ -96,5 +97,6 @@
         </table>
 </div>
 		@endif
+    @endif
    
 @endsection
