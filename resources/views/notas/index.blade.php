@@ -29,11 +29,11 @@
           </thead>
           <tbody>
           	@foreach($notas as $nota)
-            @if($nota->users->id == auth()->user()->id)
+            @foreach($nota->users as $user)
+            @if($user->id == auth()->user()->id)
             @if($now->diffInDays($nota->fecha_final,false)<=3)
                <tr style="background-color: red">
               <td><a href="{{route('nota.show',$nota->id)}}">{{$nota->name}}</a></td>
-              <td>{{$nota->descripcion}}</td>
               <td>{{$nota->user->name}}</td>
               <td>{{$nota->created_at->format('Y-m-d')}}</td>
               <td>faltan {{$now->diffInDays($nota->fecha_final,false)}} dias</td>
@@ -93,6 +93,7 @@
             </tr>
             @endif
             @endif
+            @endforeach
             @endforeach
           </tbody>
         </table>
