@@ -33,16 +33,13 @@ class NotaController extends Controller
     // dd(Carbon::now()->format('d-m-y'));
            
         $name = $request->get('name');
-         if (auth()->user()!=null) {
-            $id = auth()->user()->id;
-        }   
         $date = Carbon::now()->format('Y-m-d');
         $now = Carbon::parse($date);
             $notas = nota::orderBy('id')
             ->name($name)
             ->with(['user'])
             ->get();
-        return view('notas/index')->with(compact(['notas','id','now']));
+        return view('notas/index')->with(compact(['notas','now']));
     }
     /**
     Estados: Pendiente,Terminado,advertencia,urgente <---realizado el agregar estados
