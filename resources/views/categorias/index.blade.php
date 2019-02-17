@@ -32,7 +32,7 @@
 				 @csrf
   				<div class="form-group">
    					<label for="exampleFormControlInput1">Categoria</label>
-    				<input type="text" class="form-control" id="name" name="name" placeholder="Ejemplo: Docente">
+    				<input type="text" class="form-control" id="name" name="name" placeholder="Ejemplo: Docente" required>
  		 		</div>
  		 		<div class="form-group">
     				<label for="exampleFormControlTextarea1">Descripcion</label>

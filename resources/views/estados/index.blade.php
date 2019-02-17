@@ -29,7 +29,7 @@
 				 @csrf
   				<div class="form-group">
    					<label for="exampleFormControlInput1">Estado</label>
-    				<input type="text" class="form-control" id="name" name="name" placeholder="Ejemplo: Pendiente">
+    				<input type="text" class="form-control" id="name" name="name" placeholder="Ejemplo: Pendiente" required>
  		 		</div>
  		 		<button type="submit" class="btn btn-outline-primary btn-block">Agregar</button>
 			</form>
