@@ -92,11 +92,11 @@
 
             </tr>
             @endif
+            @endif
             @endforeach
           </tbody>
         </table>
 </div>
-		@endif
     @endif
    
 @endsection
