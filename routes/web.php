@@ -45,7 +45,8 @@ Route::post('precreate','PreCreateNota@enviar')->name('precreatenota.enviar');
 Route::resource('nota','NotaController');
 Route::get('nota/crear/{id}','NotaController@create')->name('nota.create');
 
-
+/*Comentarios*/
+Route::resource('comentario','ComentarioController');
 
 /*login*/
 Route::get('login','Auth\LoginCotroller@showLoginForm')->name('login');

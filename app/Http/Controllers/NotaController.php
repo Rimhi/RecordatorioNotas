@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\Auth;
 use App\User;
+use App\Comentario;
 use App\Events\NotaCreada;
 
 class NotaController extends Controller
@@ -30,12 +31,11 @@ class NotaController extends Controller
      */
     public function index(Request $request)
     {
-    // dd(Carbon::now()->format('d-m-y'));
-           
+    // dd(Carbon::now()->format('d-m-y'));   
         $name = $request->get('name');
         $date = Carbon::now()->format('Y-m-d');
         $now = Carbon::parse($date);
-            $notas = nota::orderBy('id')
+            $notas = nota::orderBy('fecha_final')
             ->name($name)
             ->with(['user'])
             ->get();
@@ -122,8 +122,10 @@ class NotaController extends Controller
      */
     public function show($id)
     {
+        $comentarios = Comentario::all();
         $nota = nota::findorFail($id);
-        return view('notas.show')->with(compact(['nota']));
+        $now = Carbon::now();
+        return view('notas.show')->with(compact(['nota','comentarios','now']));
     }
 
     /**

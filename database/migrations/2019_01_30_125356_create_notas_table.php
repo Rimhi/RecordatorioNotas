@@ -22,7 +22,6 @@ class CreateNotasTable extends Migration
             $table->date('fecha_final');
             $table->integer('estado_id');
             $table->integer('categoria_id');
-            $table->integer('comentario_id')->nullable();
             $table->string('archivo_id')->nullable();
             $table->timestamps();
         });
